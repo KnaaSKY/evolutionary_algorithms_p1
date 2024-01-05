@@ -83,3 +83,4 @@ for i in range(0, individual_amount):
     print()
     populacja.individuals[i].display()
 
+print("DANYLO")
