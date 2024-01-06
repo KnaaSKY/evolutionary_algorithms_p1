@@ -19,6 +19,13 @@ class Chromosome:
     def set_actual_value_y(self, value):
         self.actual_value_y = value
 
+    def only_add_gen(self, best_gens: list):
+        self.gene = []
+        self.actual_value_x: float = 0
+        self.actual_value_y: float = 0
+        for i in range(0, len(best_gens)):
+            self.gene.append(best_gens[i])
+
 
 class Individual:
 
@@ -43,4 +50,3 @@ class Population:
         for i in range(0, amount_of_individuals + 1):
             new_individual = Individual()
             self.individuals.append(new_individual)
-

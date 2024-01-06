@@ -26,5 +26,18 @@ def population_init(individuals_amount: int, range_start: float, range_end: floa
     return population
 
 
+def population_create(individuals_amount: int, old_individuals: list,
+                      range_start: float, range_end: float) -> Population:
+    population = Population(individuals_amount)
+    for i in range(0, len(old_individuals)):
+        our_chromosome = Chromosome.only_add_gen(old_individuals[i])
+        actual_value = chromosome_decode(range_start, range_end, our_chromosome)
+        our_chromosome.set_actual_value_x(actual_value)
+        our_chromosome.set_actual_value_y(fitness_function(our_chromosome.actual_value_x))
+        population.individuals[i].add_chromosome(our_chromosome)
+
+    return population
+
+
 def fitness_function(x: float) -> float:
-    return x**3 - 4*x**2 + x - 4
+    return x ** 3 - 4 * x ** 2 + x - 4

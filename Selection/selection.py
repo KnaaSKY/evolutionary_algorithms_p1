@@ -14,32 +14,56 @@ class Selection:
         self.individuals_best_amount = individuals_best_amount
 
     def selection(self, population: Population):
+        population_gen = []
         population_y = []
         for i in range(population.individual_amount):
             population_y.append(population.individuals[i].chromosome.actual_value_y)
 
+        for j in range(population.individual_amount):
+            population_gen.append(population.individuals[j].chromosome.gene)
+
+        pop_dict = dict()
+        for k in range(population.individual_amount):
+            pop_dict[tuple(population_gen[k])] = population_y[k]
+
         match self.selection_type:
             case Selection.selection_type_best:
-                self.selection_best_method(population_y)
+                old_gens = []
+                old_gens = self.selection_best_method(pop_dict)
+                # for element in old_gens:
+                #     print(element, end='\n')
+                return old_gens
             case Selection.selection_type_roulette:
                 print("selection_type_roulette")
             case Selection.selection_type_tournament:
                 print("selection_type_tournament")
 
-    def selection_best_method(self, population_y: list):
-        for element in population_y:
-            print(element, end='\n')                        # DO ZROBIENIA
-        print()
-        print()
+    def selection_best_method(self, pop_dict: dict):
 
         if self.min_method == Selection.evaluation_min:
-            population_y.sort()
-            for element in population_y:
-                print(element, end='\n')
+            pop_dict_sorted = dict(sorted(pop_dict.items(), key=lambda item: item[1]))
+            # for key, value in pop_dict_sorted.items():
+            #     print(f"{key}: {value}")
+            best_gen = []
+            for key in pop_dict_sorted.keys():
+                best_gen.append(key)
+                if len(best_gen) == self.individuals_best_amount:
+                    break
+            # for element in best_gen:
+            #     print(element, end='\n')
+            return best_gen
         else:
-            population_y.sort(reverse=True)
-            for element in population_y:
-                print(element, end='\n')
+            pop_dict_sorted = dict(sorted(pop_dict.items(), key=lambda item: item[1], reverse=True))
+            # for key, value in pop_dict_sorted.items():
+            #     print(f"{key}: {value}")
+            best_gen = []
+            for key in pop_dict_sorted.keys():
+                best_gen.append(key)
+                if len(best_gen) == self.individuals_best_amount:
+                    break
+            # for element in best_gen:
+            #     print(element, end='\n')
+            return best_gen
 
 
     def selection_roulette_method(self):

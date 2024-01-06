@@ -17,5 +17,12 @@ for i in range(0, individual_amount):
     population.individuals[i].display()
 
 selekcja = Selection(1, True, 10)
-selekcja.selection(population)
+
+
+old_gen = selekcja.selection(population)
+
+population_create(individual_amount,  old_gen, a, b)
+# for element in old_gen:
+#     print(element, end='\n')
+
 print("DANYLO")
