@@ -5,13 +5,17 @@ from main import evolutionary_algorithm
 
 def submit():
     try:
+        selection_type = variable.get()
+        mutation_type = variable1.get()
+        cross_type = variable3.get()
         a = float(entrybox.get())
         b = float(entrybox2.get())
         power_number_intervals = float(entrybox3.get())
         individual_amount = int(entrybox4.get())
         individuals_best_amount = int(entrybox5.get())
         epochs_amount = int(entrybox6.get())
-        return a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount
+        return a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount,\
+        selection_type, mutation_type,  cross_type
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
 
@@ -20,8 +24,11 @@ def execute_evolutionary_algorithm():
     try:
         values = submit()
         if values is not None:
-            a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount = values
-            evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount)
+            a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount, selection_type \
+            ,mutation_type,  cross_type = values
+            evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount, selection_type, mutation_type, \
+                                   cross_type
+                                   )
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
     except TypeError as e:
@@ -77,6 +84,7 @@ row_counter += 1
 entrybox9 = create_entry_label_pair("Enter Inversion probability:", row_counter)
 row_counter += 1
 
+
 label_description10 = Label(
     window,
     text="Choose selection type:",
@@ -111,9 +119,9 @@ label_description11 = Label(
 )
 label_description11.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
 options1 = ["Inversion", "Crossover", "Mutation", "Edge mutation", "One-point mutation", "Two-point mutation"]
-variable = StringVar(window)
-variable.set(options1[0])
-option_menu1 = OptionMenu(window, variable, *options1)
+variable1 = StringVar(window)
+variable1.set(options1[0])
+option_menu1 = OptionMenu(window, variable1, *options1)
 option_menu1.config(
     font=('Calibri', 12),
     bg="#2b2b2a",
@@ -127,7 +135,30 @@ option_menu1.config(
 )
 option_menu1.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
 row_counter += 1
-
+label_description12 = Label(
+    window,
+    text="Choose cross type:",
+    font=('Calibri', 14),
+    bg="#3b3c3d",
+    fg='#f6f7df',
+)
+label_description12.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
+options = ["one-point cross", "two-point cross", "homogeneous cross"]
+variable3 = StringVar(window)
+variable3.set(options[0])
+option_menu = OptionMenu(window, variable3, *options)
+option_menu.config(
+    font=('Calibri', 12),
+    bg="#2b2b2a",
+    fg='#f6f7df',
+    activebackground="#2b2b2a",
+    activeforeground='#f6f7df',
+    width=17,
+    bd=0,
+    highlightthickness=0
+)
+option_menu.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
+row_counter += 1
 submit_button = Button(window,
                        text="Submit",
                        font=('Calibri', 10),
