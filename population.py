@@ -24,6 +24,7 @@ class Chromosome:
     def set_gene(self, new_gene: list):
         self.gene = new_gene
 
+
 class Individual:
 
     def __init__(self):

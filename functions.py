@@ -43,3 +43,11 @@ def population_create(individuals_amount: int, old_individuals: dict,
 
 def fitness_function(x: float) -> float:
     return x ** 3 - 4 * x ** 2 + x - 4
+
+
+def calculate_gene_values(population: Population, range_start: float, range_end: float):
+    for i in range(population.individual_amount):
+        actual_value = chromosome_decode(range_start, range_end, population.individuals[i].chromosome)
+        population.individuals[i].chromosome.set_actual_value_x(actual_value)
+        population.individuals[i].chromosome.set_actual_value_y(fitness_function(population.individuals[i].chromosome.actual_value_x))
+

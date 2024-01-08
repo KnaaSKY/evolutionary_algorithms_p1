@@ -32,9 +32,12 @@ for i in range(0, individuals_best_amount):
 
 inversion = Inversion(0.5)
 inversion.inversion(population)
+calculate_gene_values(population, a, b)
 for i in range(0, individuals_best_amount):
     print()
     population.individuals[i].display()
+
+
 
 print("DANYLO")
 
