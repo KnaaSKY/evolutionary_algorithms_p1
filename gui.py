@@ -13,18 +13,12 @@ def submit():
         elif selection_type == "Roulette selection":
             selection_type = 3
         mutation_type = variable1.get()
-        if mutation_type == "Inversion":
+        if mutation_type == "Edge mutation":
             mutation_type = 1
-        elif mutation_type == "Crossover":
-            mutation_type = 2
-        elif mutation_type == "Mutation":
-            mutation_type = 3
-        elif mutation_type == "Edge mutation":
-            mutation_type = 4
         elif mutation_type == "One-point mutation":
-            mutation_type = 5
+            mutation_type = 2
         elif mutation_type == "Two-point mutation":
-            mutation_type = 6
+            mutation_type = 3
         cross_type = variable3.get()
         if cross_type == "one-point cross":
             cross_type = 1
@@ -41,8 +35,11 @@ def submit():
         individual_amount = int(entrybox4.get())
         individuals_best_amount = int(entrybox5.get())
         epochs_amount = int(entrybox6.get())
+        cross_probability = float(entrybox7.get())
+        muta_probability = float(entrybox8.get())
+        inver_probability = float(entrybox9.get())
         return a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount,\
-        selection_type, mutation_type,  cross_type
+        selection_type, mutation_type,  cross_type, cross_probability, muta_probability, inver_probability
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
 
@@ -52,9 +49,9 @@ def execute_evolutionary_algorithm():
         values = submit()
         if values is not None:
             a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount, selection_type \
-            ,mutation_type,  cross_type = values
-            evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount, selection_type, mutation_type, \
-                                   cross_type
+            ,mutation_type,  cross_type , cross_probability, muta_probability, inver_probability= values
+            evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount, selection_type, \
+                                   mutation_type, cross_type, cross_probability, muta_probability, inver_probability
                                    )
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
@@ -92,29 +89,29 @@ def create_entry_label_pair(description, row):
 
 
 row_counter = 0
-entrybox = create_entry_label_pair("Enter start of the range:", row_counter)
+entrybox = create_entry_label_pair("start of the range:", row_counter)
 row_counter += 1
-entrybox2 = create_entry_label_pair("Enter end of the range:", row_counter)
+entrybox2 = create_entry_label_pair("end of the range:", row_counter)
 row_counter += 1
-entrybox3 = create_entry_label_pair("Enter precission:", row_counter)
+entrybox3 = create_entry_label_pair("precission:", row_counter)
 row_counter += 1
-entrybox4 = create_entry_label_pair("Enter amount of individuals:", row_counter)
+entrybox4 = create_entry_label_pair("amount of individuals:", row_counter)
 row_counter += 1
-entrybox5 = create_entry_label_pair("Enter amount of best individuals:", row_counter)
+entrybox5 = create_entry_label_pair("amount of best individuals:", row_counter)
 row_counter += 1
-entrybox6 = create_entry_label_pair("Enter amount of epochs:", row_counter)
+entrybox6 = create_entry_label_pair("amount of epochs:", row_counter)
 row_counter += 1
-entrybox7 = create_entry_label_pair("Enter Cross probability:", row_counter)
+entrybox7 = create_entry_label_pair("cross probability:", row_counter)
 row_counter += 1
-entrybox8 = create_entry_label_pair("Enter Mutation probability:", row_counter)
+entrybox8 = create_entry_label_pair("mutation probability:", row_counter)
 row_counter += 1
-entrybox9 = create_entry_label_pair("Enter Inversion probability:", row_counter)
+entrybox9 = create_entry_label_pair("inversion probability:", row_counter)
 row_counter += 1
 
 
 label_description10 = Label(
     window,
-    text="Choose selection type:",
+    text="selection type:",
     font=('Calibri', 14),
     bg="#3b3c3d",
     fg='#f6f7df',
@@ -139,13 +136,13 @@ row_counter += 1
 
 label_description11 = Label(
     window,
-    text="Choose mutation type:",
+    text="mutation type:",
     font=('Calibri', 14),
     bg="#3b3c3d",
     fg='#f6f7df',
 )
 label_description11.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
-options1 = ["Inversion", "Crossover", "Mutation", "Edge mutation", "One-point mutation", "Two-point mutation"]
+options1 = ["Edge mutation", "One-point mutation", "Two-point mutation"]
 variable1 = StringVar(window)
 variable1.set(options1[0])
 option_menu1 = OptionMenu(window, variable1, *options1)
@@ -164,7 +161,7 @@ option_menu1.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
 row_counter += 1
 label_description12 = Label(
     window,
-    text="Choose cross type:",
+    text="cross type:",
     font=('Calibri', 14),
     bg="#3b3c3d",
     fg='#f6f7df',

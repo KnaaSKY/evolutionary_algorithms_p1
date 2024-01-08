@@ -1,153 +1,166 @@
 from population import *
 from functions import *
-
+import copy
 class Crossover:
-    crossover_probability = 0
     crossover_type_one_point = 1
     crossover_type_two_point = 2
     crossover_type_homogeneous = 3
 
 
-    def __init__(self, crossover_type: int, individuals_best_amount: int):
+    def __init__(self, crossover_type: int, individuals_best_amount: int, cross_probability: float):
         self.crossover_type = crossover_type
         self.individuals_best_amount = individuals_best_amount
+        self.crossover_probability = cross_probability
 
-    def crossover(self, population: Population,a ,b):
+    def crossover(self, population: Population):
         population_gen = []
+
         for j in range(self.individuals_best_amount):
             individual = population.individuals[j]
             if individual is not None and individual.chromosome is not None:
                 population_gen.append(individual.chromosome.gene)
-        match self.crossover_type:
-            case Crossover.crossover_type_one_point:
-                cross_population = self.crossover_type_one_point_method(population, population_gen, a, b)
-                return cross_population
-            case Crossover.crossover_type_two_point:
-                cross_population = self.crossover_type_two_point_method(population, population_gen, a, b)
-                return cross_population
-            case Crossover.crossover_type_homogeneous:
-                cross_population = self.crossover_type_homogeneous_method(population, population_gen, a, b)
-                return cross_population
 
+        num_remaining_individuals = len(population.individuals) - self.individuals_best_amount
+        while num_remaining_individuals > 0:
+            chance_crossover = round(random.uniform(0, 1), 2)
 
-    def crossover_type_one_point_method(self, population: Population, population_gen: list, a, b):
-        new_individuals = population.individuals[:10]
+            if 0 <= chance_crossover <= self.crossover_probability:
+                match self.crossover_type:
+                    case Crossover.crossover_type_one_point:
+                        self.crossover_type_one_point_method(population, population_gen)
+                        num_remaining_individuals -= 1
+                    case Crossover.crossover_type_two_point:
+                        self.crossover_type_two_point_method(population, population_gen)
+                        num_remaining_individuals -= 1
+                    case Crossover.crossover_type_homogeneous:
+                        self.crossover_type_homogeneous_method(population, population_gen)
+                        num_remaining_individuals -= 1
 
-        for i in range(0, len(population_gen), 2):
-            crossover_index = random.randint(0, len(population_gen[i]) - 1)
-            print(crossover_index)
-
-
-            if crossover_index == len(population_gen[i]):
-                crossover_index -= 1
-
-            new_gene1 = population_gen[i][:crossover_index] + population_gen[i + 1][crossover_index:]
-            new_gene2 = population_gen[i + 1][:crossover_index] + population_gen[i][crossover_index:]
-
-            new_chromosome1 = Chromosome()
-            new_chromosome1.set_gene(new_gene1)
-            actual_value = chromosome_decode(a, b, new_chromosome1)
-            new_chromosome1.set_actual_value_x(actual_value)
-            new_chromosome1.set_actual_value_y(fitness_function(new_chromosome1.actual_value_x))
-
-            new_chromosome2 = Chromosome()
-            new_chromosome2.set_gene(new_gene2)
-            actual_value = chromosome_decode(a, b, new_chromosome2)
-            new_chromosome2.set_actual_value_x(actual_value)
-            new_chromosome2.set_actual_value_y(fitness_function(new_chromosome2.actual_value_x))
-
-            new_individual1 = Individual()
-            new_individual1.add_chromosome(new_chromosome1)
-            new_individuals.append(new_individual1)
-
-            new_individual2 = Individual()
-            new_individual2.add_chromosome(new_chromosome2)
-            new_individuals.append(new_individual2)
-
-        population.individuals = new_individuals
 
         return population
 
-    def crossover_type_two_point_method(self, population: Population, population_gen: list, a, b):
-        new_individuals = population.individuals[:10]
+    def crossover_type_one_point_method(self, population: Population, population_gen: list):
+        new_individuals = []
+        idx1, idx2 = random.sample(range(len(population_gen)), 2)
 
-        for i in range(0, len(population_gen), 2):
-            crossover_index1 = random.randint(0, len(population_gen[i]) - 1)
-            crossover_index2 = random.randint(crossover_index1 + 1, len(population_gen[i]))
+        crossover_index = random.randint(0, len(population_gen[0]) - 1)
+
+        new_gene1 = population_gen[idx1][:crossover_index] + population_gen[idx2][crossover_index:]
+        new_gene2 = population_gen[idx2][:crossover_index] + population_gen[idx1][crossover_index:]
+
+        new_chromosome1 = Chromosome()
+        new_chromosome1.set_gene(new_gene1)
+
+        new_chromosome2 = Chromosome()
+        new_chromosome2.set_gene(new_gene2)
+
+        new_individual1 = Individual()
+        new_individual1.add_chromosome(new_chromosome1)
+        new_individuals.append(new_individual1)
+
+        new_individual2 = Individual()
+        new_individual2.add_chromosome(new_chromosome2)
+        new_individuals.append(new_individual2)
 
 
-            if crossover_index1 == len(population_gen[i]):
-                crossover_index1 -= 1
 
+        population_gen.append(new_gene1)
+        population_gen.append(new_gene2)
 
-            print(f"Crossover points: {crossover_index1}, {crossover_index2}")
+        for i, new_individual in enumerate(new_individuals):
+            index_to_update = self.find_next_empty_index(population)
 
-            new_gene1 = population_gen[i][:crossover_index1] + \
-                        population_gen[i + 1][crossover_index1:crossover_index2] + \
-                        population_gen[i][crossover_index2:]
+        if index_to_update is not None:
 
-            new_gene2 = population_gen[i + 1][:crossover_index1] + \
-                        population_gen[i][crossover_index1:crossover_index2] + \
-                        population_gen[i + 1][crossover_index2:]
+            new_individual_copy = copy.deepcopy(new_individual)
 
-            new_chromosome1 = Chromosome()
-            new_chromosome1.set_gene(new_gene1)
-            actual_value = chromosome_decode(a, b, new_chromosome1)
-            new_chromosome1.set_actual_value_x(actual_value)
-            new_chromosome1.set_actual_value_y(fitness_function(new_chromosome1.actual_value_x))
+            population.individuals[index_to_update] = new_individual_copy
+        return population
 
-            new_chromosome2 = Chromosome()
-            new_chromosome2.set_gene(new_gene2)
-            actual_value = chromosome_decode(a, b, new_chromosome2)
-            new_chromosome2.set_actual_value_x(actual_value)
-            new_chromosome2.set_actual_value_y(fitness_function(new_chromosome2.actual_value_x))
+    def crossover_type_two_point_method(self, population: Population, population_gen: list):
+        new_individuals = []
+        idx1, idx2 = random.sample(range(len(population_gen)), 2)
 
-            new_individual1 = Individual()
-            new_individual1.add_chromosome(new_chromosome1)
-            new_individuals.append(new_individual1)
+        size = len(population_gen[idx1])
 
-            new_individual2 = Individual()
-            new_individual2.add_chromosome(new_chromosome2)
-            new_individuals.append(new_individual2)
+        crossover_index1 = random.randint(0, size - 1)
+        crossover_index2 = random.randint(crossover_index1 + 1, size)
 
-        population.individuals = new_individuals
+        new_gene1 = population_gen[idx1][:crossover_index1] + \
+                    population_gen[idx2][crossover_index1:crossover_index2] + \
+                    population_gen[idx1][crossover_index2:]
+
+        new_gene2 = population_gen[idx2][:crossover_index1] + \
+                    population_gen[idx1][crossover_index1:crossover_index2] + \
+                    population_gen[idx2][crossover_index2:]
+
+        new_chromosome1 = Chromosome()
+        new_chromosome1.set_gene(new_gene1)
+
+        new_chromosome2 = Chromosome()
+        new_chromosome2.set_gene(new_gene2)
+
+        new_individual1 = Individual()
+        new_individual1.add_chromosome(new_chromosome1)
+        new_individuals.append(new_individual1)
+
+        new_individual2 = Individual()
+        new_individual2.add_chromosome(new_chromosome2)
+        new_individuals.append(new_individual2)
+
+        population_gen.append(new_gene1)
+        population_gen.append(new_gene2)
+
+        for i, new_individual in enumerate(new_individuals):
+            index_to_update = self.find_next_empty_index(population)
+
+        if index_to_update is not None:
+            new_individual_copy = copy.deepcopy(new_individual)
+
+            population.individuals[index_to_update] = new_individual_copy
 
         return population
 
-    def crossover_type_homogeneous_method(self, population: Population, population_gen: list, a, b):
-        new_individuals = population.individuals[:10]
+    def crossover_type_homogeneous_method(self, population: Population, population_gen: list):
+        new_individuals = []
+        idx1, idx2 = random.sample(range(len(population_gen)), 2)
 
-        for i in range(0, len(population_gen), 2):
-            size = len(population_gen[i])
+        size = len(population_gen[idx1])
 
+        new_gene1 = [population_gen[idx1][j] if j % 2 == 0 else population_gen[idx2][j] for j in range(size)]
+        new_gene2 = [population_gen[idx2][j] if j % 2 == 0 else population_gen[idx1][j] for j in range(size)]
 
-            new_gene1 = [population_gen[i][j] if j % 2 == 0 else population_gen[i + 1][j] for j in range(size)]
-            new_gene2 = [population_gen[i + 1][j] if j % 2 == 0 else population_gen[i][j] for j in range(size)]
+        new_chromosome1 = Chromosome()
+        new_chromosome1.set_gene(new_gene1)
 
+        new_chromosome2 = Chromosome()
+        new_chromosome2.set_gene(new_gene2)
 
-            new_chromosome1 = Chromosome()
-            new_chromosome1.set_gene(new_gene1)
-            actual_value = chromosome_decode(a, b, new_chromosome1)
-            new_chromosome1.set_actual_value_x(actual_value)
-            new_chromosome1.set_actual_value_y(fitness_function(new_chromosome1.actual_value_x))
+        new_individual1 = Individual()
+        new_individual1.add_chromosome(new_chromosome1)
+        new_individuals.append(new_individual1)
 
-            new_chromosome2 = Chromosome()
-            new_chromosome2.set_gene(new_gene2)
-            actual_value = chromosome_decode(a, b, new_chromosome2)
-            new_chromosome2.set_actual_value_x(actual_value)
-            new_chromosome2.set_actual_value_y(fitness_function(new_chromosome2.actual_value_x))
+        new_individual2 = Individual()
+        new_individual2.add_chromosome(new_chromosome2)
+        new_individuals.append(new_individual2)
 
+        population_gen.append(new_gene1)
+        population_gen.append(new_gene2)
 
-            new_individual1 = Individual()
-            new_individual1.add_chromosome(new_chromosome1)
-            new_individuals.append(new_individual1)
+        for i, new_individual in enumerate(new_individuals):
+            index_to_update = self.find_next_empty_index(population)
 
-            new_individual2 = Individual()
-            new_individual2.add_chromosome(new_chromosome2)
-            new_individuals.append(new_individual2)
+        if index_to_update is not None:
+            new_individual_copy = copy.deepcopy(new_individual)
 
-
-        population.individuals = new_individuals
-
+            population.individuals[index_to_update] = new_individual_copy
         return population
 
+    def find_next_empty_index(self, population: Population):
+        for i, individual in enumerate(population.individuals[10:]):
+            if individual is None:
+                return i + 10
+            elif individual.chromosome is None or individual.chromosome.gene is None:
+                return i + 10
+
+        return None
