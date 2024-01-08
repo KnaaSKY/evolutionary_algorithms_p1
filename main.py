@@ -12,7 +12,7 @@ def evolutionary_algorithm(a, b, power_number_intervals, individual_amount, indi
         print()
         population.individuals[i].display()
 
-    selekcja = Selection(1, True, 10)
+    selekcja = Selection(selection_type, True, 10)
     old_gen = selekcja.selection(population)
 
     if old_gen is not None:  # Check if old_gen is not None before proceeding
@@ -21,7 +21,7 @@ def evolutionary_algorithm(a, b, power_number_intervals, individual_amount, indi
         print()
 
         population = population_create(individual_amount, old_gen, a, b)
-        crossover = Crossover(1, individuals_best_amount)
+        crossover = Crossover(cross_type, individuals_best_amount)
         wynik = crossover.crossover(population, a, b)
         for i, individual in enumerate(wynik.individuals):
             print(f"Individual {i + 1}:")

@@ -37,7 +37,7 @@ class Crossover:
             crossover_index = random.randint(0, len(population_gen[i]) - 1)
             print(crossover_index)
 
-            # Zabezpieczenie przed sytuacją, gdy crossover_index jest równe długości chromosomu
+
             if crossover_index == len(population_gen[i]):
                 crossover_index -= 1
 
@@ -75,9 +75,10 @@ class Crossover:
             crossover_index1 = random.randint(0, len(population_gen[i]) - 1)
             crossover_index2 = random.randint(crossover_index1 + 1, len(population_gen[i]))
 
-            # Zabezpieczenie przed sytuacją, gdy crossover_index2 jest równe długości chromosomu
-            if crossover_index2 == len(population_gen[i]):
-                crossover_index2 -= 1
+
+            if crossover_index1 == len(population_gen[i]):
+                crossover_index1 -= 1
+
 
             print(f"Crossover points: {crossover_index1}, {crossover_index2}")
 

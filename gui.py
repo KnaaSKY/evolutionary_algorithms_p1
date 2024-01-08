@@ -6,8 +6,35 @@ from main import evolutionary_algorithm
 def submit():
     try:
         selection_type = variable.get()
+        if selection_type == "Selection of the best":
+            selection_type = 1
+        elif selection_type == "Tournament selection":
+            selection_type = 2
+        elif selection_type == "Roulette selection":
+            selection_type = 3
         mutation_type = variable1.get()
+        if mutation_type == "Inversion":
+            mutation_type = 1
+        elif mutation_type == "Crossover":
+            mutation_type = 2
+        elif mutation_type == "Mutation":
+            mutation_type = 3
+        elif mutation_type == "Edge mutation":
+            mutation_type = 4
+        elif mutation_type == "One-point mutation":
+            mutation_type = 5
+        elif mutation_type == "Two-point mutation":
+            mutation_type = 6
         cross_type = variable3.get()
+        if cross_type == "one-point cross":
+            cross_type = 1
+        if cross_type == "two-point cross":
+            cross_type = 2
+        if cross_type == "homogeneous cross":
+            cross_type = 3
+        print(f"Selected selection type: {selection_type}")
+        print(f"Selected mutation type: {mutation_type}")
+        print(f"Selected cross type: {cross_type}")
         a = float(entrybox.get())
         b = float(entrybox2.get())
         power_number_intervals = float(entrybox3.get())
