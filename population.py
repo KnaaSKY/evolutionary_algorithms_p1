@@ -18,6 +18,8 @@ class Chromosome:
 
     def set_gene(self, new_gene: list):
         self.gene = new_gene
+        gene_temp = ''.join(map(str, self.gene))
+        self.gene_decoded = int(gene_temp, 2)
 
 
 class Individual:
@@ -25,8 +27,8 @@ class Individual:
     range_end = None
 
     def __init__(self):
-        self.chromosome = []
-        self.chromosome_values = []
+        self.chromosome = []  # [Chromosome1, Chromosome2]
+        self.chromosome_values = []  # [value1, value2]
         self.fitness_function_value = None
 
     def add_chromosome(self, new_chromosome: Chromosome):
