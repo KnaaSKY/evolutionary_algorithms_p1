@@ -7,17 +7,18 @@ class Chromosome:
     def __init__(self):
         # self.gene = [0,0,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,1,0,1,0]
         self.gene = []
-        self.gene_decoded: float = 0
+        self.gene_decoded = 0
 
     def create_gene(self):
         for i in range(0, self.size):
             number = random.choice([0, 1])
             self.gene.append(number)
-        gene_temp = ''.join(map(str, self.gene))
-        self.gene_decoded = int(gene_temp, 2)
+        self.update_gene()
 
     def set_gene(self, new_gene: list):
         self.gene = new_gene
+
+    def update_gene(self):
         gene_temp = ''.join(map(str, self.gene))
         self.gene_decoded = int(gene_temp, 2)
 
@@ -41,8 +42,12 @@ class Individual:
 
     @staticmethod
     def fitness_function(variables: list) -> float:  # variables = [variable1, variable2, variable3]
-        return variables[0] ** 3 - 4 * variables[0] ** 2 + variables[0] - 4
-        # return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
+        variables_amount = len(variables)
+        match variables_amount:
+            case 1:
+                return variables[0] ** 3 - 4 * variables[0] ** 2 + variables[0] - 4
+            case 2:
+                return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
 
     @staticmethod
     def chromosome_decode(range_start: float, range_end: float, chromosome: Chromosome) -> int:
