@@ -5,7 +5,23 @@ from Crossover.crossover import *
 
 def evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount,\
                             selection_type, mutation_type, cross_type, cross_probability, muta_probability,\
-                           inver_probability):
+                           inver_probability, elite_individuals,num_variables, optimisation):
+
+
+    print("All of the guis info")
+    print(a)
+    print(b)
+    print(power_number_intervals)
+    print(individual_amount)
+    print(individuals_best_amount)
+    print(selection_type)
+    print(mutation_type)
+    print(cross_type)
+    print(cross_probability)
+    print(muta_probability)
+    print(inver_probability)
+    print(elite_individuals)
+    print(num_variables)
     Chromosome.size = chromosome_length(a, b, power_number_intervals)
     population = population_init(individual_amount, a, b)
 
