@@ -4,6 +4,7 @@ from main import evolutionary_algorithm
 import customtkinter
 
 
+
 def submit():
     try:
         minimisation = False
@@ -56,17 +57,32 @@ def execute_evolutionary_algorithm():
             variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
                 individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
                 crossover_probability, mutation_probability, inversion_probability, minimisation = values
-            evolutionary_algorithm(variable_amount, a, b, power_number_intervals, individual_amount,
+            the_best_individuals=evolutionary_algorithm(variable_amount, a, b, power_number_intervals, individual_amount,
                                    individual_selection_amount,
                                    individual_elitism_amount, epochs_amount, selection_type, mutation_type,
                                    crossover_type,
                                    crossover_probability, mutation_probability, inversion_probability, minimisation)
+            display_result_window(the_best_individuals)
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
     except TypeError as e:
         messagebox.showerror("Error", f"Error during execution: {str(e)}")
 
-
+def display_result_window(the_best_individuals):
+    new_window = Toplevel()
+    new_window.geometry("300x300")
+    new_window.config(background="#3b3c3d")
+    new_window.title("Result")
+    individuals = list(the_best_individuals.values())
+    our_individual = individuals[-1]
+    label1 = Label(new_window, background="#3b3c3d", fg="white", text="The result: ")
+    label1.pack()
+    for i in our_individual.chromosome_values:
+        label = Label(new_window, background="#3b3c3d", fg = "white" ,text = str(i))
+        label.pack()
+    label2 = Label(new_window, background="#3b3c3d", fg="white", text="Fitness function: " +str(our_individual.fitness_function_value))
+    label2.pack()
+    new_window.mainloop()
 
 window = customtkinter.CTk()
 window.geometry("500x700")
