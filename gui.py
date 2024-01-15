@@ -1,11 +1,10 @@
 from tkinter import *
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from main import evolutionary_algorithm
-import customtkinter
+
 
 def submit():
     try:
-        optimisation = True
         selection_type = variable.get()
         if selection_type == "Selection of the best":
             selection_type = 1
@@ -27,10 +26,6 @@ def submit():
             cross_type = 2
         if cross_type == "homogeneous cross":
             cross_type = 3
-        optm = variable5.get()
-        if optm == "maximisation":
-            optimisation = False
-        num_variables = entrybox11.get()
         print(f"Selected selection type: {selection_type}")
         print(f"Selected mutation type: {mutation_type}")
         print(f"Selected cross type: {cross_type}")
@@ -43,10 +38,8 @@ def submit():
         cross_probability = float(entrybox7.get())
         muta_probability = float(entrybox8.get())
         inver_probability = float(entrybox9.get())
-        elite_individuals = int(entrybox10.get())
         return a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount,\
-        selection_type, mutation_type,  cross_type, cross_probability, muta_probability, inver_probability,\
-        elite_individuals, num_variables, optimisation
+        selection_type, mutation_type,  cross_type, cross_probability, muta_probability, inver_probability
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
 
@@ -56,11 +49,9 @@ def execute_evolutionary_algorithm():
         values = submit()
         if values is not None:
             a, b, power_number_intervals, individual_amount, individuals_best_amount, epochs_amount, selection_type \
-            ,mutation_type,  cross_type , cross_probability, muta_probability, inver_probability, elite_individuals ,\
-                num_variables, optimisation= values
+            ,mutation_type,  cross_type , cross_probability, muta_probability, inver_probability= values
             evolutionary_algorithm(a, b, power_number_intervals, individual_amount, individuals_best_amount, selection_type, \
-                                   mutation_type, cross_type, cross_probability, muta_probability, inver_probability,\
-                                   elite_individuals,num_variables, optimisation
+                                   mutation_type, cross_type, cross_probability, muta_probability, inver_probability
                                    )
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
@@ -68,21 +59,13 @@ def execute_evolutionary_algorithm():
         messagebox.showerror("Error", f"Error during execution: {str(e)}")
 
 
-window = customtkinter.CTk()
-window.geometry("500x700")
-window.title("Evolutionary Algorithms")
+window = Tk()
+window.geometry("600x900")
+window.title("evolutionary algorithms")
 window.config(background="#3b3c3d")
-icon = PhotoImage(file='kwadrat.png')
+icon = PhotoImage(file='DNA-Icon-Graphics-4217002-1.png')
 window.iconphoto(True, icon)
 
-# Ustawienie stylu dla list rozwijanych
-style = ttk.Style()
-style.configure('TCombobox', padding=2, relief="flat", borderwidth=5, highlightthickness=0)
-style.map('TCombobox', fieldbackground=[('readonly', '#2b2b2a')])
-
-# Ustawienie stylu dla pól Entry
-style.configure('TEntry', padding=2, relief="flat", borderwidth=5, highlightthickness=0)
-style.map('TEntry', fieldbackground=[('readonly', '#2b2b2a')])
 
 def create_entry_label_pair(description, row):
     label = Label(
@@ -92,7 +75,7 @@ def create_entry_label_pair(description, row):
         bg="#3b3c3d",
         fg='#f6f7df',
     )
-    label.grid(row=row, column=0, pady=5, padx=10, sticky=E)
+    label.grid(row=row, column=0, pady=5, padx=5, sticky=W)
 
     entry = Entry(
         window,
@@ -100,33 +83,31 @@ def create_entry_label_pair(description, row):
         bg="#2b2b2a",
         fg='#f6f7df',
     )
-    entry.grid(row=row, column=1, pady=5, padx=10, sticky=W)
+    entry.grid(row=row, column=1, pady=5, padx=5, sticky=W)
 
     return entry
 
+
 row_counter = 0
-entrybox11 = create_entry_label_pair("amount of variables:", row_counter)
-row_counter += 1
 entrybox = create_entry_label_pair("start of the range:", row_counter)
 row_counter += 1
 entrybox2 = create_entry_label_pair("end of the range:", row_counter)
 row_counter += 1
-entrybox3 = create_entry_label_pair("precision:", row_counter)
+entrybox3 = create_entry_label_pair("precission:", row_counter)
 row_counter += 1
 entrybox4 = create_entry_label_pair("amount of individuals:", row_counter)
 row_counter += 1
 entrybox5 = create_entry_label_pair("amount of best individuals:", row_counter)
 row_counter += 1
-entrybox10 = create_entry_label_pair("elite individuals amount:", row_counter)
-row_counter += 1
 entrybox6 = create_entry_label_pair("amount of epochs:", row_counter)
 row_counter += 1
-entrybox7 = create_entry_label_pair("crossing probability:", row_counter)
+entrybox7 = create_entry_label_pair("cross probability:", row_counter)
 row_counter += 1
 entrybox8 = create_entry_label_pair("mutation probability:", row_counter)
 row_counter += 1
 entrybox9 = create_entry_label_pair("inversion probability:", row_counter)
 row_counter += 1
+
 
 label_description10 = Label(
     window,
@@ -135,7 +116,7 @@ label_description10 = Label(
     bg="#3b3c3d",
     fg='#f6f7df',
 )
-label_description10.grid(row=row_counter, column=0, pady=5, padx=10, sticky=E)
+label_description10.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
 options = ["Selection of the best", "Tournament selection", "Roulette selection"]
 variable = StringVar(window)
 variable.set(options[0])
@@ -150,17 +131,42 @@ option_menu.config(
     bd=0,
     highlightthickness=0
 )
-option_menu.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
-
+option_menu.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
 row_counter += 1
-label_description12 = Label(
+
+label_description11 = Label(
     window,
-    text="crossing type:",
+    text="mutation type:",
     font=('Calibri', 14),
     bg="#3b3c3d",
     fg='#f6f7df',
 )
-label_description12.grid(row=row_counter, column=0, pady=5, padx=10, sticky=E)
+label_description11.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
+options1 = ["Edge mutation", "One-point mutation", "Two-point mutation"]
+variable1 = StringVar(window)
+variable1.set(options1[0])
+option_menu1 = OptionMenu(window, variable1, *options1)
+option_menu1.config(
+    font=('Calibri', 12),
+    bg="#2b2b2a",
+    fg='#f6f7df',
+    activebackground="#2b2b2a",
+    activeforeground='#f6f7df',
+    width=17,
+    bd=0,
+    highlightthickness=0
+
+)
+option_menu1.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
+row_counter += 1
+label_description12 = Label(
+    window,
+    text="cross type:",
+    font=('Calibri', 14),
+    bg="#3b3c3d",
+    fg='#f6f7df',
+)
+label_description12.grid(row=row_counter, column=0, pady=5, padx=5, sticky=W)
 options = ["one-point cross", "two-point cross", "homogeneous cross"]
 variable3 = StringVar(window)
 variable3.set(options[0])
@@ -175,57 +181,7 @@ option_menu.config(
     bd=0,
     highlightthickness=0
 )
-option_menu.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
-
-row_counter += 1
-label_description11 = Label(
-    window,
-    text="mutation type:",
-    font=('Calibri', 14),
-    bg="#3b3c3d",
-    fg='#f6f7df',
-)
-label_description11.grid(row=row_counter, column=0, pady=5, padx=10, sticky=E)
-options1 = ["Edge mutation", "One-point mutation", "Two-point mutation"]
-variable1 = StringVar(window)
-variable1.set(options1[0])
-option_menu1 = OptionMenu(window, variable1, *options1)
-option_menu1.config(
-    font=('Calibri', 12),
-    bg="#2b2b2a",
-    fg='#f6f7df',
-    activebackground="#2b2b2a",
-    activeforeground='#f6f7df',
-    width=17,
-    bd=0,
-    highlightthickness=0
-)
-option_menu1.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
-
-row_counter += 1
-label_description15 = Label(
-    window,
-    text="optimisation:",
-    font=('Calibri', 14),
-    bg="#3b3c3d",
-    fg='#f6f7df',
-)
-label_description15.grid(row=row_counter, column=0, pady=5, padx=10, sticky=E)
-options = ["maximisation", "minimisation"]
-variable5 = StringVar(window)
-variable5.set(options[0])
-option_menu = OptionMenu(window, variable5, *options)
-option_menu.config(
-    font=('Calibri', 12),
-    bg="#2b2b2a",
-    fg='#f6f7df',
-    activebackground="#2b2b2a",
-    activeforeground='#f6f7df',
-    width=17,
-    bd=0,
-    highlightthickness=0
-)
-option_menu.grid(row=row_counter, column=1, pady=5, padx=10, sticky = E)
+option_menu.grid(row=row_counter, column=1, pady=5, padx=1, sticky=W)
 row_counter += 1
 submit_button = Button(window,
                        text="Submit",
@@ -233,11 +189,6 @@ submit_button = Button(window,
                        command=execute_evolutionary_algorithm,
                        width=12,
                        )
-submit_button.grid(row=row_counter, column=1, columnspan=2, pady=10, padx=20)
-
-
-x_offset = (window.winfo_screenwidth() - window.winfo_reqwidth()) // 2
-y_offset = (window.winfo_screenheight() - window.winfo_reqheight()) // 2
-window.geometry("+{}+{}".format(x_offset, y_offset))
+submit_button.grid(row=row_counter, column=0, columnspan=2, pady=10)
 
 window.mainloop()
