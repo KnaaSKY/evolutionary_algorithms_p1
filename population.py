@@ -1,4 +1,5 @@
 import random
+import benchmark_functions as bf
 
 
 class Chromosome:
@@ -17,6 +18,7 @@ class Chromosome:
 
     def set_gene(self, new_gene: list):
         self.gene = new_gene
+        # self.update_gene()
 
     def update_gene(self):
         gene_temp = ''.join(map(str, self.gene))
@@ -34,8 +36,14 @@ class Individual:
 
     def add_chromosome(self, new_chromosome: Chromosome):
         self.chromosome.append(new_chromosome)
-        value = self.chromosome_decode(Individual.range_start, Individual.range_end, new_chromosome)
-        self.chromosome_values.append(value)
+        # value = self.chromosome_decode(Individual.range_start, Individual.range_end, new_chromosome)
+        # self.chromosome_values.append(value)
+
+    def update_values(self):
+        for chromosome in self.chromosome:
+            value = self.chromosome_decode(Individual.range_start, Individual.range_end, chromosome)
+            self.chromosome_values.append(value)
+        self.set_fitness_function()
 
     def set_fitness_function(self):
         self.fitness_function_value = self.fitness_function(self.chromosome_values)
@@ -43,11 +51,13 @@ class Individual:
     @staticmethod
     def fitness_function(variables: list) -> float:  # variables = [variable1, variable2, variable3]
         variables_amount = len(variables)
+        func = bf.DeJong3()
         match variables_amount:
             case 1:
-                return variables[0] ** 3 - 4 * variables[0] ** 2 + variables[0] - 4
+                return variables[0] ** 3 - 7 * variables[0] ** 2 + -10 * variables[0] - 4
             case 2:
-                return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
+                # return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
+                return func(variables)
 
     @staticmethod
     def chromosome_decode(range_start: float, range_end: float, chromosome: Chromosome) -> int:
