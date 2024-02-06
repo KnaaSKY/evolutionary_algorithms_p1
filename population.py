@@ -1,7 +1,10 @@
 import random
+import benchmark_functions as bf
 
 
 class Chromosome:
+    #__slots__ = "gene", "gene_decoded"
+
     size = None
 
     def __init__(self):
@@ -17,6 +20,7 @@ class Chromosome:
 
     def set_gene(self, new_gene: list):
         self.gene = new_gene
+        # self.update_gene()
 
     def update_gene(self):
         gene_temp = ''.join(map(str, self.gene))
@@ -24,6 +28,8 @@ class Chromosome:
 
 
 class Individual:
+    #__slots__ = "chromosome","chromosome_values", "fitness_function_value"
+
     range_start = None
     range_end = None
 
@@ -34,8 +40,14 @@ class Individual:
 
     def add_chromosome(self, new_chromosome: Chromosome):
         self.chromosome.append(new_chromosome)
-        value = self.chromosome_decode(Individual.range_start, Individual.range_end, new_chromosome)
-        self.chromosome_values.append(value)
+        # value = self.chromosome_decode(Individual.range_start, Individual.range_end, new_chromosome)
+        # self.chromosome_values.append(value)
+
+    def update_values(self):
+        for chromosome in self.chromosome:
+            value = self.chromosome_decode(Individual.range_start, Individual.range_end, chromosome)
+            self.chromosome_values.append(value)
+        self.set_fitness_function()
 
     def set_fitness_function(self):
         self.fitness_function_value = self.fitness_function(self.chromosome_values)
@@ -43,11 +55,13 @@ class Individual:
     @staticmethod
     def fitness_function(variables: list) -> float:  # variables = [variable1, variable2, variable3]
         variables_amount = len(variables)
+        func = bf.Hyperellipsoid()
         match variables_amount:
             case 1:
-                return variables[0] ** 3 - 4 * variables[0] ** 2 + variables[0] - 4
+                return variables[0] ** 3 - 7 * variables[0] ** 2 + -10 * variables[0] - 4
             case 2:
-                return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
+                # return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
+                return func(variables)
 
     @staticmethod
     def chromosome_decode(range_start: float, range_end: float, chromosome: Chromosome) -> int:
@@ -61,6 +75,7 @@ class Individual:
 
 
 class Population:
+    #__slots__ = "individual_amount", "individuals", "variables_amount"
 
     def __init__(self, individual_amount: int, variables_amount: int):
         self.individual_amount: int = individual_amount
