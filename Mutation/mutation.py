@@ -3,6 +3,8 @@ import random
 
 
 class Mutation:
+    #__slots__ = "mutation_type", "probability"
+
     mutation_type_one_point = 1
     mutation_type_two_points = 2
     mutation_type_edge = 3

@@ -3,6 +3,7 @@ from Selection.selection import *
 from Crossover.crossover import *
 from Inversion.inversion import *
 from Mutation.mutation import *
+import time
 # a: float = -10
 # b: float = 10
 # power_number_intervals: int = 6  # 10^power_number_intervals - number of intervals to divide our range
@@ -41,53 +42,8 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
     Chromosome.size = chromosome_length(a, b, power_number_intervals)
     Individual.range_start = a
     Individual.range_end = b
-    # print(a)
-    # print(b)
-    # print(power_number_intervals)
-    # print(individual_amount)
-    # print(variable_amount)
-    # print(individual_selection_amount)
-    # print(individual_elitism_amount)
-    # print(epochs_amount)
-    # print(minimisation)
-    # print(selection_type)
-    # print(mutation_type)
-    # print(crossover_type)
-    # print(crossover_probability)
-    # print(mutation_probability)
-    # print(inversion_probability)
 
-
-# individual_amount_no_elitism = individual_amount - individual_elitism_amount
-# Chromosome.size = chromosome_length(a, b, power_number_intervals)
-# Individual.range_start = a
-# Individual.range_end = b
-#
-#     population = population_init(individual_amount, variable_amount)
-#
-#     for i in range(0, individual_amount):
-#         print()
-#         population.individuals[i].display()
-#
-#     selekcja = Selection(1, True, individual_selection_amount)
-#     best_gens = selekcja.selection(population)
-#     for i in range(0, 3):
-#         for j in range(0, variable_amount):
-#             print(best_gens[i].chromosome[j].gene, end="    ")
-#             print(best_gens[i].chromosome_values[j])
-#
-#     crossover = Crossover(2, 0.7, individual_amount, individual_elitism_amount)
-#     population = crossover.crossover(best_gens)
-#
-#     for i in range(0, individual_amount_no_elitism):
-#         print()
-#         population.individuals[i].display()
-#
-#     inversion = Inversion(0.7)
-#     inversion.inversion(population, individual_amount_no_elitism)
-#     for i in range(0, individual_amount_no_elitism):
-#         print()
-#         population.individuals[i].display()
+    start_time = time.time()
     selection = Selection(selection_type, minimisation, individual_selection_amount)
     crossover = Crossover(crossover_type, crossover_probability, individual_amount, individual_elitism_amount)
     inversion = Inversion(inversion_probability)
@@ -109,5 +65,8 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
     for key, value in the_best_individuals.items():
         print(key)
         value.display()
-    return the_best_individuals
+
     print("DANYLO")
+    print("--- %s seconds ---" % (time.time() - start_time))
+
+    return the_best_individuals, time.time() - start_time

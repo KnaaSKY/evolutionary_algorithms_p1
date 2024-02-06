@@ -4,7 +4,6 @@ from main import evolutionary_algorithm
 import customtkinter
 
 
-
 def submit():
     try:
         minimisation = False
@@ -43,6 +42,7 @@ def submit():
         mutation_probability = float(entrybox8.get())
         inversion_probability = float(entrybox9.get())
         individual_elitism_amount = int(entrybox10.get())
+
         return variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
             individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
             crossover_probability, mutation_probability, inversion_probability, minimisation
@@ -57,18 +57,20 @@ def execute_evolutionary_algorithm():
             variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
                 individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
                 crossover_probability, mutation_probability, inversion_probability, minimisation = values
-            the_best_individuals=evolutionary_algorithm(variable_amount, a, b, power_number_intervals, individual_amount,
-                                   individual_selection_amount,
-                                   individual_elitism_amount, epochs_amount, selection_type, mutation_type,
-                                   crossover_type,
-                                   crossover_probability, mutation_probability, inversion_probability, minimisation)
-            display_result_window(the_best_individuals)
+            the_best_individuals, time = evolutionary_algorithm(variable_amount, a, b, power_number_intervals,
+                                                          individual_amount, individual_selection_amount,
+                                                          individual_elitism_amount, epochs_amount, selection_type,
+                                                          mutation_type, crossover_type,
+                                                          crossover_probability, mutation_probability,
+                                                          inversion_probability, minimisation)
+            display_result_window(the_best_individuals, time)
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
     except TypeError as e:
         messagebox.showerror("Error", f"Error during execution: {str(e)}")
 
-def display_result_window(the_best_individuals):
+
+def display_result_window(the_best_individuals, time):
     new_window = Toplevel()
     new_window.geometry("300x300")
     new_window.config(background="#3b3c3d")
@@ -78,11 +80,16 @@ def display_result_window(the_best_individuals):
     label1 = Label(new_window, background="#3b3c3d", fg="white", text="The result: ")
     label1.pack()
     for i in our_individual.chromosome_values:
-        label = Label(new_window, background="#3b3c3d", fg = "white" ,text = str(i))
+        label = Label(new_window, background="#3b3c3d", fg="white", text=str(i))
         label.pack()
-    label2 = Label(new_window, background="#3b3c3d", fg="white", text="Fitness function: " +str(our_individual.fitness_function_value))
+    label2 = Label(new_window, background="#3b3c3d", fg="white",
+                   text="Fitness function: " + str(our_individual.fitness_function_value))
     label2.pack()
+    label3 = Label(new_window, background="#3b3c3d", fg="white",
+                   text="Time: " + str(time) + " s")
+    label3.pack()
     new_window.mainloop()
+
 
 window = customtkinter.CTk()
 window.geometry("500x700")
@@ -124,26 +131,37 @@ def create_entry_label_pair(description, row):
 
 row_counter = 0
 entrybox11 = create_entry_label_pair("amount of variables:", row_counter)
+entrybox11.insert(0, "2")
 row_counter += 1
 entrybox = create_entry_label_pair("start of the range:", row_counter)
+entrybox.insert(0, "-65.536")
 row_counter += 1
 entrybox2 = create_entry_label_pair("end of the range:", row_counter)
+entrybox2.insert(0, "65.536")
 row_counter += 1
 entrybox3 = create_entry_label_pair("precision:", row_counter)
+entrybox3.insert(0, "12")
 row_counter += 1
 entrybox4 = create_entry_label_pair("amount of individuals:", row_counter)
+entrybox4.insert(0, "1000")
 row_counter += 1
 entrybox5 = create_entry_label_pair("amount of best individuals:", row_counter)
+entrybox5.insert(0, "200")
 row_counter += 1
 entrybox10 = create_entry_label_pair("elite individuals amount:", row_counter)
+entrybox10.insert(0, "2")
 row_counter += 1
 entrybox6 = create_entry_label_pair("amount of epochs:", row_counter)
+entrybox6.insert(0, "1000")
 row_counter += 1
 entrybox7 = create_entry_label_pair("crossing probability:", row_counter)
+entrybox7.insert(0, "0.7")
 row_counter += 1
 entrybox8 = create_entry_label_pair("mutation probability:", row_counter)
+entrybox8.insert(0, "0.3")
 row_counter += 1
 entrybox9 = create_entry_label_pair("inversion probability:", row_counter)
+entrybox9.insert(0, "0.1")
 row_counter += 1
 
 label_description10 = Label(

@@ -4,6 +4,8 @@ import copy
 
 
 class Crossover:
+    #__slots__ = "crossover_type", "individual_amount", "individuals_amount_create", "probability"
+
     crossover_type_one_point = 1
     crossover_type_two_point = 2
     crossover_type_homogeneous = 3

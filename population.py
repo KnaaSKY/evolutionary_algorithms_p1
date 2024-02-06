@@ -3,6 +3,8 @@ import benchmark_functions as bf
 
 
 class Chromosome:
+    #__slots__ = "gene", "gene_decoded"
+
     size = None
 
     def __init__(self):
@@ -26,6 +28,8 @@ class Chromosome:
 
 
 class Individual:
+    #__slots__ = "chromosome","chromosome_values", "fitness_function_value"
+
     range_start = None
     range_end = None
 
@@ -51,7 +55,7 @@ class Individual:
     @staticmethod
     def fitness_function(variables: list) -> float:  # variables = [variable1, variable2, variable3]
         variables_amount = len(variables)
-        func = bf.DeJong3()
+        func = bf.Hyperellipsoid()
         match variables_amount:
             case 1:
                 return variables[0] ** 3 - 7 * variables[0] ** 2 + -10 * variables[0] - 4
@@ -71,6 +75,7 @@ class Individual:
 
 
 class Population:
+    #__slots__ = "individual_amount", "individuals", "variables_amount"
 
     def __init__(self, individual_amount: int, variables_amount: int):
         self.individual_amount: int = individual_amount
