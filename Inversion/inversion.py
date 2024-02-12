@@ -3,8 +3,6 @@ import random
 
 
 class Inversion:
-    #__slots__ = "probability"
-
     def __init__(self, probability: float):
         self.probability = probability
 

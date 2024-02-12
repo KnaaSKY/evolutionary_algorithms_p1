@@ -24,7 +24,8 @@ class Selection:
                 best_chromosomes = self.selection_tournament_method(population)
                 return best_chromosomes
             case Selection.selection_type_roulette:
-                print("selection_type_roulette")
+                best_chromosomes = self.selection_roulette_method(population)
+                return best_chromosomes
 
     def selection_best_method(self, population: Population) -> list[Individual]:
 
@@ -41,9 +42,75 @@ class Selection:
                 individuals_list.append(individuals_sorted[i])
             return individuals_list
 
-
     def selection_roulette_method(self, population: Population) -> list[Individual]:
-        pass
+        individuals_list = []
+
+        fitness_function_list_max = []
+        for individual in population.individuals:
+            fitness_function_list_max.append(individual.fitness_function_value)
+
+        if self.min_method == Selection.evaluation_min:
+            fitness_function_list_min = []
+            for i in range(len(fitness_function_list_max)):
+                fitness_function_list_min.append(1 / fitness_function_list_max[i])
+            sum_fitness_function_min = sum(fitness_function_list_min)
+
+            minimum_value_min = min(fitness_function_list_min)
+            for i in range(len(fitness_function_list_max)):
+                fitness_function_list_min[i] += minimum_value_min + 1
+
+            sum_fitness_function_min = sum(fitness_function_list_min)
+
+            for i in range(len(fitness_function_list_min)):
+                fitness_function_list_min[i] /= sum_fitness_function_min
+
+            running_sum = 0
+            for i in range(len(fitness_function_list_min)):
+                temp = fitness_function_list_min[i]
+                fitness_function_list_min[i] += running_sum
+                running_sum += temp
+
+            for i in range(0, self.individuals_best_amount):
+                drawn_probability = round(random.uniform(0, 1), 10)
+                closest_index, closest_number = min(enumerate(fitness_function_list_min), key=lambda x: abs(x[1] - drawn_probability))
+                is_in_list = any(obj.fitness_function_value == population.individuals[closest_index].fitness_function_value for obj in individuals_list)
+                if is_in_list:
+                    pass
+                else:
+                    individuals_list.append(population.individuals[closest_index])
+
+            individuals_list.sort(key=lambda x: x.fitness_function_value)
+        else:
+            minimum_value_max = min(fitness_function_list_max)
+            for i in range(len(fitness_function_list_max)):
+                fitness_function_list_max[i] += minimum_value_max + 1
+
+            sum_fitness_function_max = sum(fitness_function_list_max)
+
+            for i in range(len(fitness_function_list_max)):
+                fitness_function_list_max[i] /= sum_fitness_function_max
+
+            running_sum = 0
+            for i in range(len(fitness_function_list_max)):
+                temp = fitness_function_list_max[i]
+                fitness_function_list_max[i] += running_sum
+                running_sum += temp
+
+            for i in range(0, self.individuals_best_amount):
+                drawn_probability = round(random.uniform(0, 1), 2)
+                closest_index, closest_number = min(enumerate(fitness_function_list_max), key=lambda x: abs(x[1] - drawn_probability))
+                is_in_list = any(obj.fitness_function_value == population.individuals[closest_index].fitness_function_value for obj in individuals_list)
+                if is_in_list:
+                    pass
+                else:
+                    individuals_list.append(population.individuals[closest_index])
+
+            individuals_list.sort(key=lambda x: x.fitness_function_value, reverse=True)
+
+        # suma = 0
+        # for i in range(len(fitness_function_list_min)):
+        #     suma += fitness_function_list_min[i]
+        return individuals_list
 
     def selection_tournament_method(self, population: Population) -> list[Individual]:
         tournament_individual_amount = int(population.individual_amount / self.individuals_best_amount)
