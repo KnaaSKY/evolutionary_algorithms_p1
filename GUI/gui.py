@@ -90,7 +90,6 @@ def display_result_window(the_best_individuals, time):
     label3.pack()
     new_window.mainloop()
 
-
 window = customtkinter.CTk()
 window.geometry("500x700")
 window.title("Evolutionary Algorithms")
@@ -274,5 +273,5 @@ submit_button.grid(row=row_counter, column=1, columnspan=2, pady=10, padx=20)
 x_offset = (window.winfo_screenwidth() - window.winfo_reqwidth()) // 2
 y_offset = (window.winfo_screenheight() - window.winfo_reqheight()) // 2
 window.geometry("+{}+{}".format(x_offset, y_offset))
-
+window.eval('tk::PlaceWindow . center')
 window.mainloop()

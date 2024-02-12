@@ -3,8 +3,6 @@ import benchmark_functions as bf
 
 
 class Chromosome:
-    #__slots__ = "gene", "gene_decoded"
-
     size = None
 
     def __init__(self):
@@ -28,8 +26,6 @@ class Chromosome:
 
 
 class Individual:
-    #__slots__ = "chromosome","chromosome_values", "fitness_function_value"
-
     range_start = None
     range_end = None
 
@@ -65,7 +61,7 @@ class Individual:
 
     @staticmethod
     def chromosome_decode(range_start: float, range_end: float, chromosome: Chromosome) -> int:
-        return range_start + chromosome.gene_decoded * (range_end - range_start) / (2 ** chromosome.size - 1)
+        return range_start + chromosome.gene_decoded * (range_end - range_start) / (2 ** Chromosome.size - 1)
 
     def display(self):
         for i in range(0, len(self.chromosome)):
@@ -75,7 +71,6 @@ class Individual:
 
 
 class Population:
-    #__slots__ = "individual_amount", "individuals", "variables_amount"
 
     def __init__(self, individual_amount: int, variables_amount: int):
         self.individual_amount: int = individual_amount
