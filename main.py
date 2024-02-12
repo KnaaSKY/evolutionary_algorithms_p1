@@ -3,20 +3,10 @@ from Selection.selection import *
 from Crossover.crossover import *
 from Inversion.inversion import *
 from Mutation.mutation import *
+import matplotlib.pyplot as p
 import time
-# a: float = -10
-# b: float = 10
-# power_number_intervals: int = 6  # 10^power_number_intervals - number of intervals to divide our range
-# individual_amount: int = 7
-# variable_amount = 1
-# individual_selection_amount: int = 3
-# individual_elitism_amount = 2
-# individual_amount_no_elitism = individual_amount - individual_elitism_amount
-# epochs_amount: int = 0
-# minimisation = True
-# Chromosome.size = chromosome_length(a, b, power_number_intervals)
-# Individual.range_start = a
-# Individual.range_end = b
+import statistics
+
 a: float = 0.0
 b: float = 0.0
 power_number_intervals: int = 0  # 10^power_number_intervals - number of intervals to divide our range
@@ -51,22 +41,59 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
 
     population = population_init(individual_amount, variable_amount)
     the_best_individuals = {}
-    for i in range(0, epochs_amount):
-        best_individuals = selection.selection(population)
-        the_best_individuals[i] = best_individuals[0]
-        elitists = [best_individuals[j] for j in range(0, individual_elitism_amount)]
-        population = crossover.crossover(best_individuals)
-        mutation.mutation(population, individual_amount_no_elitism)
-        inversion.inversion(population, individual_amount_no_elitism)
-        update_data(population)
-        for j in elitists:
-            population.add_individual(j)
+    x = []
+    y = []
+    average = []
+    standard_deviation = []
+    with open('result.txt', 'w') as file:
+        for i in range(0, epochs_amount):
+            best_individuals = selection.selection(population)
+            the_best_individuals[i] = best_individuals[0]
+            elitists = [best_individuals[j] for j in range(0, individual_elitism_amount)]
+            population = crossover.crossover(best_individuals)
+            mutation.mutation(population, individual_amount_no_elitism)
+            inversion.inversion(population, individual_amount_no_elitism)
+            update_data(population)
+            for j in elitists:
+                population.add_individual(j)
+            x.append(i)
+            y.append(best_individuals[0].fitness_function_value)
+            suma: float = 0.0
+            values_list = []
+            for k in range(0, individual_amount):
+                values_list.append(population.individuals[k].fitness_function_value)
+                suma = sum(values_list)
+            average.append(suma / individual_amount)
+            standard_deviation.append(statistics.stdev(values_list))
 
     for key, value in the_best_individuals.items():
         print(key)
         value.display()
 
+    timee = time.time() - start_time
+    p.plot(x, y)
+    p.title("Wykres wartości funkcji")
+    p.xlabel("Iteracja")
+    p.ylabel("Wartość funkcji")
+    p.savefig('wykres1.png')
+    p.show()
+    p.plot(x, average)
+    p.title("Wykres średniej wartości funkcji")
+    p.xlabel("Iteracja")
+    p.ylabel("Średnia wartość funkcji")
+    p.savefig('wykres2.png')
+    p.show()
+    p.plot(x, standard_deviation)
+    p.title("Wykres odchylenia standardowego")
+    p.xlabel("Iteracja")
+    p.ylabel("Odchylenie standardowe")
+    p.savefig('wykres3.png')
+    p.show()
+    p.close()
     print("DANYLO")
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
-    return the_best_individuals, time.time() - start_time
+    print("DANYLO")
+   # print("--- %s seconds ---" % (time.time() - start_time))
+
+    return the_best_individuals, timee
