@@ -28,9 +28,10 @@ def submit():
             crossover_type = 2
         if crossover_type == "homogeneous cross":
             crossover_type = 3
-        optm = variable5.get()
+        optm = variable_optm.get()
         if optm == "minimisation":
             minimisation = True
+
         variable_amount = int(entrybox11.get())
         a = float(entrybox.get())
         b = float(entrybox2.get())
@@ -237,38 +238,30 @@ option_menu1.config(
 )
 option_menu1.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
 
+
 row_counter += 1
-label_description15 = Label(
-    window,
-    text="minimisation:",
-    font=('Calibri', 14),
-    bg="#3b3c3d",
-    fg='#f6f7df',
-)
-label_description15.grid(row=row_counter, column=0, pady=5, padx=10, sticky=E)
-options = ["minimisation", "maximisation"]
-variable5 = StringVar(window)
-variable5.set(options[0])
-option_menu = OptionMenu(window, variable5, *options)
-option_menu.config(
-    font=('Calibri', 12),
-    bg="#2b2b2a",
-    fg='#f6f7df',
-    activebackground="#2b2b2a",
-    activeforeground='#f6f7df',
-    width=17,
-    bd=0,
-    highlightthickness=0
-)
-option_menu.grid(row=row_counter, column=1, pady=5, padx=10, sticky=E)
+variable_optm = StringVar(window)
+variable_optm.set("minimisation")
+r1 = Radiobutton(window, text="Minimisation", value="minimisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df', selectcolor="#3b3c3d",activeforeground="#f6f7df" ,\
+                 activebackground="#3b3c3d", variable=variable_optm)
+r1.grid(row=row_counter, column=0, pady=(10, 0), sticky=E)
+r2 = Radiobutton(window, text="Maximisation", value="maximisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df', selectcolor="#3b3c3d", activeforeground="#f6f7df" ,\
+                 activebackground="#3b3c3d",variable=variable_optm)
+r2.grid(row=row_counter, column=1, pady=(10, 0), sticky=W)
+
+
 row_counter += 1
 submit_button = Button(window,
                        text="Submit",
                        font=('Calibri', 10),
                        command=execute_evolutionary_algorithm,
-                       width=12,
+                       width=20,
+                       bg="#2b2b2a",
+                       fg='#f6f7df',
+                       activebackground="#2b2b2a",
+                       activeforeground='#f6f7df'
                        )
-submit_button.grid(row=row_counter, column=1, columnspan=2, pady=10, padx=20)
+submit_button.place(relx=0.5, rely=0.87, anchor="center")
 
 x_offset = (window.winfo_screenwidth() - window.winfo_reqwidth()) // 2
 y_offset = (window.winfo_screenheight() - window.winfo_reqheight()) // 2
