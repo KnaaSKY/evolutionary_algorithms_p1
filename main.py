@@ -7,6 +7,7 @@ import matplotlib.pyplot as p
 import time
 import statistics
 
+
 a: float = 0.0
 b: float = 0.0
 power_number_intervals: int = 0  # 10^power_number_intervals - number of intervals to divide our range
@@ -27,7 +28,7 @@ inversion_probability: float = 0.0
 def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, individual_amount,
                            individual_selection_amount,
                            individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type,
-                           crossover_probability, mutation_probability, inversion_probability, minimisation):
+                           crossover_probability, mutation_probability, inversion_probability, minimisation, func_type):
     individual_amount_no_elitism = individual_amount - individual_elitism_amount
     Chromosome.size = chromosome_length(a, b, power_number_intervals)
     Individual.range_start = a
@@ -39,7 +40,7 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
     inversion = Inversion(inversion_probability)
     mutation = Mutation(mutation_type, mutation_probability)
 
-    population = population_init(individual_amount, variable_amount)
+    population = population_init(individual_amount, variable_amount, func_type)
     the_best_individuals = {}
     x = []
     y = []

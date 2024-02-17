@@ -32,7 +32,58 @@ def submit():
         if optm == "minimisation":
             minimisation = True
 
-        variable_amount = int(entrybox11.get())
+        func = choosen_func.get()
+        if func == "Default (1)":
+            func_type = 1
+        if func == "Default (2)":
+            func_type = 2
+        if func == "Hypersphere (2)":
+            func_type = 3
+        if func == "Hyperellipsoid (2)":
+            func_type = 4
+        if func == "Schwefel (2)":
+            func_type = 5
+        if func == "Ackley (2)":
+            func_type = 6
+        if func == "Michalewicz (2)":
+            func_type = 7
+        if func == "Rastrigin (2)":
+            func_type = 8
+        if func == "Rosenbrock (2)":
+            func_type = 9
+        if func == "De Jong 3 (2)":
+            func_type = 10
+        if func == "De Jong 5 (2)":
+            func_type = 11
+        if func == "Martin and Gaddy (2)":
+            func_type = 12
+        if func == 'Griewank (2)':
+            func_type = 13
+        if func == "Easom (2)":
+            func_type = 14
+        if func == "Goldstein and Price (2)":
+            func_type = 15
+        if func == "Picheny, Goldstein and Price (2)":
+            func_type = 16
+        if func == "Styblinski and Tang (2)":
+            func_type = 17
+        if func == "Mc Cormick (2)":
+            func_type = 18
+        if func == "Rana (2)":
+            func_type = 19
+        if func == "Egg Holder (2)":
+            func_type = 20
+        if func == "Keane (2)":
+            func_type = 21
+        if func == "Schaffer 2 (2)":
+            func_type = 22
+        if func == "Himmelblau (2)":
+            func_type = 23
+        if func == "Pits and Holes (2)":
+            func_type = 24
+
+
+
         a = float(entrybox.get())
         b = float(entrybox2.get())
         power_number_intervals = int(entrybox3.get())
@@ -43,12 +94,14 @@ def submit():
         mutation_probability = float(entrybox8.get())
         inversion_probability = float(entrybox9.get())
         individual_elitism_amount = int(entrybox10.get())
-
+        variable_amount = 2
         return variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
             individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
-            crossover_probability, mutation_probability, inversion_probability, minimisation
+            crossover_probability, mutation_probability, inversion_probability, minimisation, func_type
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
+
+
 
 
 def execute_evolutionary_algorithm():
@@ -57,13 +110,14 @@ def execute_evolutionary_algorithm():
         if values is not None:
             variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
                 individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
-                crossover_probability, mutation_probability, inversion_probability, minimisation = values
+                crossover_probability, mutation_probability, inversion_probability, minimisation, func_type = values
             the_best_individuals, time = evolutionary_algorithm(variable_amount, a, b, power_number_intervals,
-                                                          individual_amount, individual_selection_amount,
-                                                          individual_elitism_amount, epochs_amount, selection_type,
-                                                          mutation_type, crossover_type,
-                                                          crossover_probability, mutation_probability,
-                                                          inversion_probability, minimisation)
+                                                                individual_amount, individual_selection_amount,
+                                                                individual_elitism_amount, epochs_amount,
+                                                                selection_type,
+                                                                mutation_type, crossover_type,
+                                                                crossover_probability, mutation_probability,
+                                                                inversion_probability, minimisation, func_type)
             display_result_window(the_best_individuals, time)
     except ValueError as e:
         messagebox.showerror("Error", f"Invalid input: {str(e)}")
@@ -90,6 +144,7 @@ def display_result_window(the_best_individuals, time):
                    text="Time: " + str(time) + " s")
     label3.pack()
     new_window.mainloop()
+
 
 window = customtkinter.CTk()
 window.geometry("500x700")
@@ -129,9 +184,26 @@ def create_entry_label_pair(description, row):
     return entry
 
 
+
 row_counter = 0
-entrybox11 = create_entry_label_pair("amount of variables:", row_counter)
-entrybox11.insert(0, "2")
+entrybox12=create_entry_label_pair("choose function:",row_counter)
+funcs = ["Default (1)","Default (2)","Hypersphere (2)","Hyperellipsoid (2)","Schwefel (2)","Ackley (2)","Michalewicz (2)","Rastrigin (2)","Rosenbrock (2)","De Jong 3 (2)",\
+       "De Jong 5 (2)","Martin and Gaddy (2)", 'Griewank (2)', "Easom (2)", "Goldstein and Price (2)", "Picheny, Goldstein and Price (2)", "Styblinski and Tang (2)",\
+       "Mc Cormick (2)","Rana (2)","Egg Holder (2)","Keane (2)","Schaffer 2 (2)","Himmelblau (2)","Pits and Holes (2)"]
+choosen_func = StringVar(window)
+choosen_func.set(funcs[0])
+option_menu_funcs = OptionMenu(window, choosen_func, *funcs)
+option_menu_funcs.config(
+    font=('Calibri', 12),
+    bg="#2b2b2a",
+    fg='#f6f7df',
+    activebackground="#2b2b2a",
+    activeforeground='#f6f7df',
+    width=17,
+    bd=0,
+    highlightthickness=0
+)
+option_menu_funcs.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
 row_counter += 1
 entrybox = create_entry_label_pair("start of the range:", row_counter)
 entrybox.insert(0, "-65.536")
@@ -238,17 +310,17 @@ option_menu1.config(
 )
 option_menu1.grid(row=row_counter, column=1, pady=5, padx=10, sticky=W)
 
-
 row_counter += 1
 variable_optm = StringVar(window)
 variable_optm.set("minimisation")
-r1 = Radiobutton(window, text="Minimisation", value="minimisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df', selectcolor="#3b3c3d",activeforeground="#f6f7df" ,\
+r1 = Radiobutton(window, text="Minimisation", value="minimisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df',
+                 selectcolor="#3b3c3d", activeforeground="#f6f7df", \
                  activebackground="#3b3c3d", variable=variable_optm)
 r1.grid(row=row_counter, column=0, pady=(10, 0), sticky=E)
-r2 = Radiobutton(window, text="Maximisation", value="maximisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df', selectcolor="#3b3c3d", activeforeground="#f6f7df" ,\
-                 activebackground="#3b3c3d",variable=variable_optm)
+r2 = Radiobutton(window, text="Maximisation", value="maximisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df',
+                 selectcolor="#3b3c3d", activeforeground="#f6f7df", \
+                 activebackground="#3b3c3d", variable=variable_optm)
 r2.grid(row=row_counter, column=1, pady=(10, 0), sticky=W)
-
 
 row_counter += 1
 submit_button = Button(window,
@@ -261,7 +333,7 @@ submit_button = Button(window,
                        activebackground="#2b2b2a",
                        activeforeground='#f6f7df'
                        )
-submit_button.place(relx=0.5, rely=0.87, anchor="center")
+submit_button.place(relx=0.5, rely=0.88, anchor="center")
 
 x_offset = (window.winfo_screenwidth() - window.winfo_reqwidth()) // 2
 y_offset = (window.winfo_screenheight() - window.winfo_reqheight()) // 2
