@@ -57,70 +57,70 @@ class Individual:
             case 2:
                 return variables[0] ** 3 * variables[1] ** 3 - 2 * variables[0] ** 2
             case 3:
-                function = bf.Hypersphere
+                function = bf.Hypersphere(variables_amount)
                 return function(variables)
             case 4:
-                function = bf.Hyperellipsoid()
+                function = bf.Hyperellipsoid(variables_amount)
                 return function(variables)
             case 5:
-                function = bf.Schwefel
+                function = bf.Schwefel(variables_amount)
                 return function(variables)
             case 6:
-                function = bf.Ackley
+                function = bf.Ackley(variables_amount)
                 return function(variables)
             case 7:
-                function = bf.Michalewicz
+                function = bf.Michalewicz(variables_amount)
                 return function(variables)
             case 8:
-                function = bf.Rastrigin
+                function = bf.Rastrigin(variables_amount)
                 return function(variables)
             case 9:
-                function = bf.Rosenbrock
+                function = bf.Rosenbrock(variables_amount)
                 return function(variables)
             case 10:
-                function = bf.DeJong3
+                function = bf.DeJong3(variables_amount)
                 return function(variables)
             case 11:
-                function = bf.DeJong5
+                function = bf.DeJong5()
                 return function(variables)
             case 12:
-                function = bf.MartinGaddy
+                function = bf.MartinGaddy()
                 return function(variables)
             case 13:
-                function = bf.Griewank
+                function = bf.Griewank(variables_amount)
                 return function(variables)
             case 14:
-                function = bf.Easom
+                function = bf.Easom()
                 return function(variables)
             case 15:
-                function = bf.GoldsteinAndPrice
+                function = bf.GoldsteinAndPrice()
                 return function(variables)
             case 16:
-                function = bf.PichenyGoldsteinAndPrice
+                function = bf.PichenyGoldsteinAndPrice()
                 return function(variables)
             case 17:
-                function = bf.StyblinskiTang
+                function = bf.StyblinskiTang(variables_amount)
                 return function(variables)
             case 18:
-                function = bf.McCormick
+                function = bf.McCormick()
                 return function(variables)
             case 19:
-                function = bf.Rana
+                function = bf.Rana(variables_amount)
                 return function(variables)
             case 20:
-                function = bf.EggHolder
+                function = bf.EggHolder(variables_amount)
                 return function(variables)
             case 21:
-                function = bf.Keane
+                function = bf.Keane(variables_amount)
                 return function(variables)
             case 22:
-                function = bf.Schaffer2
+                function = bf.Schaffer2()
                 return function(variables)
             case 23:
-                function = bf.Himmelblau
+                function = bf.Himmelblau()
                 return function(variables)
             case 24:
-                function = bf.PitsAndHoles
+                function = bf.PitsAndHoles()
                 return function(variables)
 
 
