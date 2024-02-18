@@ -224,7 +224,7 @@ entrybox10 = create_entry_label_pair("elite individuals amount:", row_counter)
 entrybox10.insert(0, "2")
 row_counter += 1
 entrybox6 = create_entry_label_pair("amount of epochs:", row_counter)
-entrybox6.insert(0, "1000")
+entrybox6.insert(0, "10")
 row_counter += 1
 entrybox7 = create_entry_label_pair("crossing probability:", row_counter)
 entrybox7.insert(0, "0.7")

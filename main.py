@@ -71,30 +71,29 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
         print(key)
         value.display()
 
-    timee = time.time() - start_time
-    p.plot(x, y)
-    p.title("Wykres wartości funkcji")
-    p.xlabel("Iteracja")
-    p.ylabel("Wartość funkcji")
-    p.savefig('wykres1.png')
-    p.show()
-    p.plot(x, average)
-    p.title("Wykres średniej wartości funkcji")
-    p.xlabel("Iteracja")
-    p.ylabel("Średnia wartość funkcji")
-    p.savefig('wykres2.png')
-    p.show()
-    p.plot(x, standard_deviation)
-    p.title("Wykres odchylenia standardowego")
-    p.xlabel("Iteracja")
-    p.ylabel("Odchylenie standardowe")
-    p.savefig('wykres3.png')
-    p.show()
-    p.close()
-    print("DANYLO")
-    # print("--- %s seconds ---" % (time.time() - start_time))
+    timee = round((time.time() - start_time), 5)
 
-    print("DANYLO")
-   # print("--- %s seconds ---" % (time.time() - start_time))
+    fig, axs = p.subplots(1, 3, figsize=(15, 5))
 
+    # Pierwszy wykres
+    axs[0].plot(x, y)
+    axs[0].set_title("Wykres wartości funkcji")
+    axs[0].set_xlabel("Iteracja")
+    axs[0].set_ylabel("Wartość funkcji")
+
+    # Drugi wykres
+    axs[1].plot(x, average)
+    axs[1].set_title("Wykres średniej wartości funkcji")
+    axs[1].set_xlabel("Iteracja")
+    axs[1].set_ylabel("Średnia wartość funkcji")
+
+    # Trzeci wykres
+    axs[2].plot(x, standard_deviation)
+    axs[2].set_title("Wykres odchylenia standardowego")
+    axs[2].set_xlabel("Iteracja")
+    axs[2].set_ylabel("Odchylenie standardowe")
+
+    # Wyświetlanie wykresów
+    p.tight_layout()
+    p.show()
     return the_best_individuals, timee
