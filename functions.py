@@ -16,7 +16,7 @@ def population_init(individual_amount: int, variables_amount: int, func_type: in
             our_chromosome = Chromosome()
             our_chromosome.create_gene()
             our_individual.add_chromosome(our_chromosome)
-        our_individual.update_values()
+        our_individual.update_values(population)
         population.add_individual(our_individual)
 
     return population
@@ -26,7 +26,7 @@ def update_data(population: Population):
     for individual in population.individuals:
         for chromosome in individual.chromosome:
             chromosome.update_gene()
-        individual.update_values()
+        individual.update_values(population)
 
 
 

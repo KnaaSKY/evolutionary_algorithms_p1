@@ -1,6 +1,7 @@
 import random
 import benchmark_functions as bf
 
+
 class Chromosome:
     size = None
 
@@ -38,14 +39,14 @@ class Individual:
         # value = self.chromosome_decode(Individual.range_start, Individual.range_end, new_chromosome)
         # self.chromosome_values.append(value)
 
-    def update_values(self):
+    def update_values(self, population):
         for chromosome in self.chromosome:
             value = self.chromosome_decode(Individual.range_start, Individual.range_end, chromosome)
             self.chromosome_values.append(value)
-        self.set_fitness_function()
+        self.set_fitness_function(population)
 
-    def set_fitness_function(self):
-        self.fitness_function_value = self.fitness_function(self.chromosome_values, Population.get_func_type())
+    def set_fitness_function(self, population):
+        self.fitness_function_value = self.fitness_function(self.chromosome_values, population.get_func_type())
 
     @staticmethod
     def fitness_function(variables: list, func_type) -> float:  # variables = [variable1, variable2, variable3]
@@ -145,6 +146,5 @@ class Population:
     def add_individual(self, new_individual: Individual):
         self.individuals.append(new_individual)
 
-    def get_func_type(self) -> int:  # Metoda zwracająca wartość func_type
-        return self._func_type
-
+    def get_func_type(self) -> int:
+        return self.func_type

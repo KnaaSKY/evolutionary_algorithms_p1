@@ -36,7 +36,7 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
 
     start_time = time.time()
     selection = Selection(selection_type, minimisation, individual_selection_amount)
-    crossover = Crossover(crossover_type, crossover_probability, individual_amount, individual_elitism_amount)
+    crossover = Crossover(crossover_type, crossover_probability, individual_amount, individual_elitism_amount, func_type)
     inversion = Inversion(inversion_probability)
     mutation = Mutation(mutation_type, mutation_probability)
 
