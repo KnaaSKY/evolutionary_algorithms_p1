@@ -10,9 +10,8 @@ class Selection:
 
     evaluation_min = True  # True for finding minimum, False for finding maximum
 
-    def __init__(self, selection_type: int, min_method: bool, individuals_best_amount: int):
+    def __init__(self, selection_type: int, individuals_best_amount: int):
         self.selection_type = selection_type
-        self.min_method = min_method
         self.individuals_best_amount = individuals_best_amount
 
     def selection(self, population: Population) -> list[Individual]:
@@ -29,7 +28,7 @@ class Selection:
 
     def selection_best_method(self, population: Population) -> list[Individual]:
 
-        if self.min_method == Selection.evaluation_min:
+        if Selection.evaluation_min:
             individuals_sorted = sorted(population.individuals, key=lambda x: x.fitness_function_value)
             individuals_list = []
             for i in range(0, self.individuals_best_amount):
@@ -49,7 +48,7 @@ class Selection:
         for individual in population.individuals:
             fitness_function_list_max.append(individual.fitness_function_value)
 
-        if self.min_method == Selection.evaluation_min:
+        if Selection.evaluation_min:
             fitness_function_list_min = []
             for i in range(len(fitness_function_list_max)):
                 fitness_function_list_min.append(1 / fitness_function_list_max[i])
@@ -131,7 +130,7 @@ class Selection:
 
         individuals_list = []
         for tournament in tournaments:
-            if self.min_method == Selection.evaluation_min:
+            if Selection.evaluation_min:
                 tournament_sorted = sorted(tournament, key=lambda x: x.fitness_function_value)
             else:
                 tournament_sorted = sorted(tournament, key=lambda x: x.fitness_function_value, reverse=True)
