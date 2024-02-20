@@ -28,6 +28,7 @@ class Chromosome:
 class Individual:
     range_start = None
     range_end = None
+    func_type = None
 
     def __init__(self):
         self.chromosome = []  # [Chromosome1, Chromosome2]
@@ -46,12 +47,12 @@ class Individual:
         self.set_fitness_function(population)
 
     def set_fitness_function(self, population):
-        self.fitness_function_value = self.fitness_function(self.chromosome_values, population.get_func_type())
+        self.fitness_function_value = self.fitness_function(self.chromosome_values)
 
     @staticmethod
-    def fitness_function(variables: list, func_type) -> float:  # variables = [variable1, variable2, variable3]
+    def fitness_function(variables: list) -> float:  # variables = [variable1, variable2, variable3]
         variables_amount = len(variables)
-        match func_type:
+        match Individual.func_type:
             case 1:
                 return variables[0] ** 3 - 7 * variables[0] ** 2 + -10 * variables[0] - 4
             case 2:
@@ -137,14 +138,10 @@ class Individual:
 
 class Population:
 
-    def __init__(self, individual_amount: int, variables_amount: int, func_type: int):
+    def __init__(self, individual_amount: int, variables_amount: int):
         self.individual_amount: int = individual_amount
         self.individuals = []
         self.variables_amount = variables_amount
-        self.func_type = func_type
 
     def add_individual(self, new_individual: Individual):
         self.individuals.append(new_individual)
-
-    def get_func_type(self) -> int:
-        return self.func_type

@@ -6,8 +6,6 @@ import customtkinter
 
 def submit():
     try:
-        minimisation = False
-
         selection_type = selection_opt.get()
         if selection_type == "Selection of the best":
             selection_type = 1
@@ -32,9 +30,12 @@ def submit():
         if crossover_type == "homogeneous cross":
             crossover_type = 3
 
+        minimisation = None
         optm = variable_optm.get()
         if optm == "minimisation":
             minimisation = True
+        if optm == "maximisation":
+            minimisation = False
 
         func = choosen_func.get()
         if func == "Default (1)":

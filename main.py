@@ -31,16 +31,18 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
                            crossover_probability, mutation_probability, inversion_probability, minimisation, func_type):
     individual_amount_no_elitism = individual_amount - individual_elitism_amount
     Chromosome.size = chromosome_length(a, b, power_number_intervals)
+    Selection.evaluation_min = minimisation
     Individual.range_start = a
     Individual.range_end = b
+    Individual.func_type = func_type
 
     start_time = time.time()
-    selection = Selection(selection_type, minimisation, individual_selection_amount)
-    crossover = Crossover(crossover_type, crossover_probability, individual_amount, individual_elitism_amount, func_type)
+    selection = Selection(selection_type, individual_selection_amount)
+    crossover = Crossover(crossover_type, crossover_probability, individual_amount, individual_elitism_amount)
     inversion = Inversion(inversion_probability)
     mutation = Mutation(mutation_type, mutation_probability)
 
-    population = population_init(individual_amount, variable_amount, func_type)
+    population = population_init(individual_amount, variable_amount)
     the_best_individuals = {}
     x = []
     y = []
