@@ -50,6 +50,7 @@ def evolutionary_algorithm(variable_amount, a, b, power_number_intervals, indivi
         for i in range(0, epochs_amount):
             best_individuals = selection.selection(population)
             the_best_individuals[i] = best_individuals[0]
+            file.write(f"{i + 1}: {best_individuals[0].fitness_function_value}\n")
             elitists = [best_individuals[j] for j in range(0, individual_elitism_amount)]
             population = crossover.crossover(best_individuals)
             mutation.mutation(population, individual_amount_no_elitism)

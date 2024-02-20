@@ -98,7 +98,6 @@ def submit():
         mutation_probability = float(entrybox10.get())
         inversion_probability = float(entrybox11.get())
 
-
         return variable_amount, a, b, power_number_intervals, individual_amount, individual_selection_amount, \
             individual_elitism_amount, epochs_amount, selection_type, mutation_type, crossover_type, \
             crossover_probability, mutation_probability, inversion_probability, minimisation, func_type
@@ -151,8 +150,6 @@ window.geometry("500x700")
 window.title("Evolutionary Algorithms")
 window.config(background="#3b3c3d")
 
-
-
 style = ttk.Style()
 style.configure('TCombobox', padding=2, relief="flat", borderwidth=5, highlightthickness=0)
 style.map('TCombobox', fieldbackground=[('readonly', '#2b2b2a')])
@@ -183,10 +180,11 @@ def create_entry_label_pair(description, row):
 
 
 row_counter = 0
-entrybox0 = create_entry_label_pair("choose function:",row_counter)
-funcs = ["Default (1)","Default (2)","Hypersphere","Hyperellipsoid","Schwefel","Ackley","Michalewicz","Rastrigin","Rosenbrock","De Jong 3",\
-       "De Jong 5 (2)","Martin and Gaddy (2)", 'Griewank', "Easom (2)", "Goldstein and Price (2)", "Picheny, Goldstein and Price (2)", "Styblinski and Tang",\
-       "Mc Cormick (2)","Rana","Egg Holder","Keane","Schaffer 2 (2)","Himmelblau (2)","Pits and Holes (2)"]
+entrybox0 = create_entry_label_pair("choose function:", row_counter)
+funcs = ["Default (1)", "Default (2)", "Hypersphere", "Hyperellipsoid", "Schwefel", "Ackley", "Michalewicz",
+         "Rastrigin", "Rosenbrock", "De Jong 3", "De Jong 5 (2)", "Martin and Gaddy (2)", 'Griewank', "Easom (2)",
+         "Goldstein and Price (2)", "Picheny, Goldstein and Price (2)", "Styblinski and Tang", "Mc Cormick (2)", "Rana",
+         "Egg Holder", "Keane", "Schaffer 2 (2)", "Himmelblau (2)", "Pits and Holes (2)"]
 choosen_func = StringVar(window)
 choosen_func.set(funcs[0])
 option_menu_funcs = OptionMenu(window, choosen_func, *funcs)
@@ -205,10 +203,10 @@ row_counter += 1
 entrybox1 = create_entry_label_pair("amount of variables:", row_counter)
 row_counter += 1
 entrybox2 = create_entry_label_pair("start of the range:", row_counter)
-#entrybox.insert(0, "-65.536")
+# entrybox.insert(0, "-65.536")
 row_counter += 1
 entrybox3 = create_entry_label_pair("end of the range:", row_counter)
-#entrybox2.insert(0, "65.536")
+# entrybox2.insert(0, "65.536")
 row_counter += 1
 entrybox4 = create_entry_label_pair("precision:", row_counter)
 entrybox4.insert(0, "12")
@@ -313,11 +311,11 @@ row_counter += 1
 variable_optm = StringVar(window)
 variable_optm.set("minimisation")
 r1 = Radiobutton(window, text="Minimisation", value="minimisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df',
-                 selectcolor="#3b3c3d", activeforeground="#f6f7df", \
+                 selectcolor="#3b3c3d", activeforeground="#f6f7df",
                  activebackground="#3b3c3d", variable=variable_optm)
 r1.grid(row=row_counter, column=0, pady=(10, 0), sticky=E)
 r2 = Radiobutton(window, text="Maximisation", value="maximisation", font=('Calibri', 12), bg="#3b3c3d", fg='#f6f7df',
-                 selectcolor="#3b3c3d", activeforeground="#f6f7df", \
+                 selectcolor="#3b3c3d", activeforeground="#f6f7df",
                  activebackground="#3b3c3d", variable=variable_optm)
 r2.grid(row=row_counter, column=1, pady=(10, 0), sticky=W)
 
